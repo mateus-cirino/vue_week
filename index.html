@@ -24,14 +24,17 @@
                 <p v-if="invetory >= 100">Tem mais de 99 meias</p>
                 <p v-else-if="invetory > 50 && invetory < 100">Tem entre 50 e 100 meias</p>
                 <p v-else>Tem menos de 100 meias</p>
-                <button v-show="buy">Comprar</button>
                 <ul>
                     <li v-for="detail in details">{{ detail }}</li>
                 </ul>
-                <div v-for="variant in variants" :key="variant.variantId">
-                    <p @mouseover="productUpdate(variant)">{{ variant.variantColor }}</p>
+                <div v-for="variant in variants" 
+                v-bind:key="variant.variantId"
+                v-bind:class=classBox 
+                v-bind:style="{ backgroundColor: variant.variantColor }"
+                v-on:click="productUpdate(variant)">
                 </div>
-                <button v-on:click="addToCart">Comprar</button>
+                <button v-on:click="addToCart"
+                v-bind:class="{ disabledButton: !inStock }">Comprar</button>
                 <div class="cart">Cart {{ cart }}</div>
             </div>
         </div>

@@ -7,7 +7,7 @@ var app = new Vue({
         imageDescription: 'A pair of warm socks',
         imageLink: 'www.vue.com',
         invetory: 10,
-        buy: false,
+        inStock: false,
         details: ["80% algodão", "20% poliester"],
         variants: [
             {
@@ -21,7 +21,8 @@ var app = new Vue({
                 variantImage: './vmSocks-blue-onWhite.jpg'
             }
         ],
-        cart: 0
+        cart: 0,
+        classBox: 'color-box',
     },
     methods: {
         addToCart() {
