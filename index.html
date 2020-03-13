@@ -13,9 +13,10 @@
     <div class="nav-bar"></div>
 
     <div id="app">
-        <product v-bind:premium="premium"></product>
-        <product></product>
-        <product></product>
+        <div class="cart">Cart {{ cart.length }}</div>
+        <product v-bind:premium="premium"
+         v-on:add-to-cart="addToCartRoot"
+         v-on:remove-to-cart="removeToCartRoot"></product>
     </div>
 
     <script src="./main.js"></script>
