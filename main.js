@@ -1,35 +1,54 @@
 var app = new Vue({
     el: '#app',
     data: {
+        brand: 'Master',
         product: 'Socks',
         description: 'A pair of warm, fuzzy socks',
-        image: './vmSocks-green-onWhite.jpg',
+        variantSelected: 1,
         imageDescription: 'A pair of warm socks',
         imageLink: 'www.vue.com',
-        invetory: 10,
-        inStock: false,
         details: ["80% algodão", "20% poliester"],
         variants: [
             {
-                variantId: 1,
+                variantId: 0,
                 variantColor: "green",
-                variantImage: './vmSocks-green-onWhite.jpg'
+                variantImage: './vmSocks-green-onWhite.jpg',
+                variantQuantity: 12
             },
             {
-                variantId: 2,
+                variantId: 1,
                 variantColor: "blue",
-                variantImage: './vmSocks-blue-onWhite.jpg'
+                variantImage: './vmSocks-blue-onWhite.jpg',
+                variantQuantity: 2
             }
         ],
         cart: 0,
         classBox: 'color-box',
     },
     methods: {
-        addToCart() {
-            this.cart = this.cart + 1
+        addToCart() {            
+            if(this.inStock) {
+                this.cart = this.cart + 1
+                this.variants[this.variantSelected].variantQuantity = this.variants[this.variantSelected].variantQuantity - 1;
+                
+            }
         },
-        productUpdate(variant) {
-            this.image = variant.variantImage
+        productUpdate(index) {
+            this.variantSelected = index;
+        }
+    },
+    computed: {
+        title() {
+            return this.brand + ' ' + this.product;
+        },
+        image() {
+            return this.variants[this.variantSelected].variantImage;
+        },
+        inStock() {
+            return (this.variants[this.variantSelected].variantQuantity > 0) ? true : false;
+        },
+        invetory() {
+            return this.variants[this.variantSelected].variantQuantity;
         }
     },
 });

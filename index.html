@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>Vue Week</title>
 </head>
+
 <body>
     <div class="nav-bar"></div>
 
@@ -17,9 +19,9 @@
                     <img v-bind:src="image" v-bind:alt="imageDescription">
                 </a>
             </div>
-    
+
             <div class="product-info">
-                <h1>{{ product }}</h1>
+                <h1>{{ title }}</h1>
                 <p>{{ description }}</p>
                 <p v-if="invetory >= 100">Tem mais de 99 meias</p>
                 <p v-else-if="invetory > 50 && invetory < 100">Tem entre 50 e 100 meias</p>
@@ -27,14 +29,10 @@
                 <ul>
                     <li v-for="detail in details">{{ detail }}</li>
                 </ul>
-                <div v-for="variant in variants" 
-                v-bind:key="variant.variantId"
-                v-bind:class=classBox 
-                v-bind:style="{ backgroundColor: variant.variantColor }"
-                v-on:click="productUpdate(variant)">
+                <div v-for="(variant, index) in variants" v-bind:key="variant.variantId" v-bind:class=classBox
+                    v-bind:style="{ backgroundColor: variant.variantColor }" v-on:click="productUpdate(index)">
                 </div>
-                <button v-on:click="addToCart"
-                v-bind:class="{ disabledButton: !inStock }">Comprar</button>
+                <button v-on:click="addToCart" v-bind:class="{ disabledButton: !inStock }">Comprar</button>
                 <div class="cart">Cart {{ cart }}</div>
             </div>
         </div>
@@ -42,4 +40,5 @@
 
     <script src="./main.js"></script>
 </body>
+
 </html>
