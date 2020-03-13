@@ -1,7 +1,32 @@
-var app = new Vue({
-    el: '#app',
-    data: {
-        brand: 'Master',
+Vue.component('product', {
+    template: `
+    <div class="product">
+    <div class="product-image">
+        <a v-bind:href="imageLink" target="_blank">
+            <img v-bind:src="image" v-bind:alt="imageDescription">
+        </a>
+    </div>
+
+    <div class="product-info">
+        <h1>{{ title }}</h1>
+        <p>{{ description }}</p>
+        <p v-if="invetory >= 100">Tem mais de 99 meias</p>
+        <p v-else-if="invetory > 50 && invetory < 100">Tem entre 50 e 100 meias</p>
+        <p v-else>Tem menos de 100 meias</p>
+        <ul>
+            <li v-for="detail in details">{{ detail }}</li>
+        </ul>
+        <div v-for="(variant, index) in variants" v-bind:key="variant.variantId" v-bind:class=classBox
+            v-bind:style="{ backgroundColor: variant.variantColor }" v-on:click="productUpdate(index)">
+        </div>
+        <button v-on:click="addToCart" v-bind:class="{ disabledButton: !inStock }">Comprar</button>
+        <div class="cart">Cart {{ cart }}</div>
+    </div>
+    </div>
+    `,
+    data() {
+        return {
+            brand: 'Master',
         product: 'Socks',
         description: 'A pair of warm, fuzzy socks',
         variantSelected: 1,
@@ -24,6 +49,7 @@ var app = new Vue({
         ],
         cart: 0,
         classBox: 'color-box',
+        }
     },
     methods: {
         addToCart() {            
@@ -51,4 +77,8 @@ var app = new Vue({
             return this.variants[this.variantSelected].variantQuantity;
         }
     },
+})
+
+var app = new Vue({
+    el: '#app',
 });
