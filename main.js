@@ -1,4 +1,10 @@
 Vue.component('product', {
+    props: {
+        premium: {
+            type: Boolean,
+            required: true
+        }
+    },
     template: `
     <div class="product">
     <div class="product-image">
@@ -16,6 +22,7 @@ Vue.component('product', {
         <ul>
             <li v-for="detail in details">{{ detail }}</li>
         </ul>
+        <p>{{ preco }}</p>
         <div v-for="(variant, index) in variants" v-bind:key="variant.variantId" v-bind:class=classBox
             v-bind:style="{ backgroundColor: variant.variantColor }" v-on:click="productUpdate(index)">
         </div>
@@ -27,28 +34,28 @@ Vue.component('product', {
     data() {
         return {
             brand: 'Master',
-        product: 'Socks',
-        description: 'A pair of warm, fuzzy socks',
-        variantSelected: 1,
-        imageDescription: 'A pair of warm socks',
-        imageLink: 'www.vue.com',
-        details: ["80% algodão", "20% poliester"],
-        variants: [
-            {
-                variantId: 0,
-                variantColor: "green",
-                variantImage: './vmSocks-green-onWhite.jpg',
-                variantQuantity: 12
-            },
-            {
-                variantId: 1,
-                variantColor: "blue",
-                variantImage: './vmSocks-blue-onWhite.jpg',
-                variantQuantity: 2
-            }
-        ],
-        cart: 0,
-        classBox: 'color-box',
+            product: 'Socks',
+            description: 'A pair of warm, fuzzy socks',
+            variantSelected: 1,
+            imageDescription: 'A pair of warm socks',
+            imageLink: 'www.vue.com',
+            details: ["80% algodão", "20% poliester"],
+            variants: [
+                {
+                    variantId: 0,
+                    variantColor: "green",
+                    variantImage: './vmSocks-green-onWhite.jpg',
+                    variantQuantity: 12
+                },
+                {
+                    variantId: 1,
+                    variantColor: "blue",
+                    variantImage: './vmSocks-blue-onWhite.jpg',
+                    variantQuantity: 2
+                }
+            ],
+            cart: 0,
+            classBox: 'color-box',
         }
     },
     methods: {
@@ -75,10 +82,16 @@ Vue.component('product', {
         },
         invetory() {
             return this.variants[this.variantSelected].variantQuantity;
+        },
+        preco() {
+            return (this.premium) ? "free" : "2.99 R$";
         }
     },
 })
 
 var app = new Vue({
     el: '#app',
+    data: {
+        premium: true,
+    },
 });
