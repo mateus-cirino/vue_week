@@ -7,17 +7,28 @@ var app = new Vue({
         imageDescription: 'A pair of warm socks',
         imageLink: 'www.vue.com',
         invetory: 10,
-        buy: true,
+        buy: false,
         details: ["80% algodão", "20% poliester"],
         variants: [
             {
                 variantId: 1,
-                variantColor: "green"
+                variantColor: "green",
+                variantImage: './vmSocks-green-onWhite.jpg'
             },
             {
                 variantId: 2,
-                variantColor: "blue"
+                variantColor: "blue",
+                variantImage: './vmSocks-blue-onWhite.jpg'
             }
-        ]
-    }
+        ],
+        cart: 0
+    },
+    methods: {
+        addToCart() {
+            this.cart = this.cart + 1
+        },
+        productUpdate(variant) {
+            this.image = variant.variantImage
+        }
+    },
 });
