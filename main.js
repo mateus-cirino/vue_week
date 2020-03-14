@@ -1,3 +1,62 @@
+Vue.component('product-review', {
+    template: `
+    <form class="review-form" @submit.prevent="onSubmit">
+    <p v-if="erros.length > 0">
+        Erros:
+        <ul>
+            <li v-for="erro in erros">{{ erro }}</li>
+        </ul>
+    </p>
+    <p>
+      <label for="name">Name:</label>
+      <input id="name" v-model="productReview.name">
+    </p>
+    
+    <p>
+      <label for="review">Review:</label>      
+      <textarea id="review" v-model="productReview.review"></textarea>
+    </p>
+    
+    <p>
+      <label for="rating">Rating:</label>
+      <select id="rating" v-model.number="productReview.rating">
+        <option>5</option>
+        <option>4</option>
+        <option>3</option>
+        <option>2</option>
+        <option>1</option>
+      </select>
+    </p>
+    <p>
+      <input type="submit" value="Submit">  
+    </p>    
+  
+  </form>`,
+    data() {
+        return {
+            productReview: {
+                name: null,
+                review: null,
+                rating: null
+            },
+            erros: []
+        }
+    },
+    methods: {
+        onSubmit() {
+            if(this.productReview.name && this.productReview.review && this.productReview.rating) {
+                this.$emit('add-product-review', JSON.parse(JSON.stringify(this.productReview)));
+                this.productReview.name = null;
+                this.productReview.review = null;
+                this.productReview.rating = null;
+            }else {
+                if(!this.productReview.name) this.erros.push("The field name is required");
+                if(!this.productReview.review) this.erros.push("The field review is required");
+                if(!this.productReview.rating) this.erros.push("The field rating is required");
+            }
+        },
+    },
+})
 Vue.component('product', {
     props: {
         premium: {
@@ -28,6 +87,19 @@ Vue.component('product', {
         </div>
         <button v-on:click="addToCart" v-bind:class="{ disabledButton: !inStock }">Comprar</button>
         <button v-on:click="removeToCart">Remover</button>
+        <p v-if="productsReview.length > 0">
+            <ul>
+                <li v-for="productReview in productsReview">
+                    {{ productReview.name }}
+                    {{ productReview.review }}
+                    {{ productReview.rating }}
+                </li>
+            </ul>
+        </p>
+        <p v-else>
+            Este produto ainda não possuí reviews
+        </p>
+        <product-review v-on:add-product-review="addReview"></product-review>
     </div>
     </div>
     `,
@@ -55,6 +127,7 @@ Vue.component('product', {
                 }
             ],
             classBox: 'color-box',
+            productsReview: []
         }
     },
     methods: {
@@ -69,6 +142,9 @@ Vue.component('product', {
         },
         productUpdate(index) {
             this.variantSelected = index;
+        },
+        addReview(productReview) {
+            this.productsReview.push(productReview);
         }
     },
     computed: {
