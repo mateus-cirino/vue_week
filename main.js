@@ -1,3 +1,60 @@
+ Vue.component('product-tab', {
+    template: `
+    <div>
+        <span class="tab"
+        v-bind:class="(tab === selectedTab) ? 'activeTab' : ''"
+        v-for="(tab, index) in tabs" 
+        v-bind:key="index" 
+        v-on:click="selectTab(tab)">{{ tab }}</span>
+        <list-product-review v-bind:productsReview=productsReview v-show=" 'list-product-review' == selectedTab "></list-product-review>
+        <product-review v-show=" 'product-review' == selectedTab "
+        v-on:add-product-review="addReview" ></product-review>
+    </div>
+    `,
+    data() {
+        return {
+            selectedTab: 'product-review',
+            tabs: ['list-product-review', 'product-review'],
+            productsReview: []
+        }
+    },
+    methods: {
+        selectTab(tab) {
+            this.selectedTab = tab;
+        },
+        addReview(productReview) {
+            this.productsReview.push(productReview);
+        },
+    },
+});
+
+Vue.component('list-product-review', {
+    props: {
+        productsReview: {
+            type: Array,
+            required: true
+        }
+    },
+    template: `
+    <p v-if="productsReview.length > 0">
+        <ul>
+            <li v-for="productReview in productsReview">
+                {{ productReview.name }}
+                {{ productReview.review }}
+                {{ productReview.rating }}
+            </li>
+        </ul>
+    </p>
+    <p v-else>
+        Este produto ainda não possuí reviews
+    </p>`,
+    data() {
+        return {
+
+        }
+    },
+});
+
 Vue.component('product-review', {
     template: `
     <form class="review-form" @submit.prevent="onSubmit">
@@ -87,19 +144,7 @@ Vue.component('product', {
         </div>
         <button v-on:click="addToCart" v-bind:class="{ disabledButton: !inStock }">Comprar</button>
         <button v-on:click="removeToCart">Remover</button>
-        <p v-if="productsReview.length > 0">
-            <ul>
-                <li v-for="productReview in productsReview">
-                    {{ productReview.name }}
-                    {{ productReview.review }}
-                    {{ productReview.rating }}
-                </li>
-            </ul>
-        </p>
-        <p v-else>
-            Este produto ainda não possuí reviews
-        </p>
-        <product-review v-on:add-product-review="addReview"></product-review>
+        <product-tab></product-tab>
     </div>
     </div>
     `,
@@ -127,7 +172,6 @@ Vue.component('product', {
                 }
             ],
             classBox: 'color-box',
-            productsReview: []
         }
     },
     methods: {
@@ -143,9 +187,6 @@ Vue.component('product', {
         productUpdate(index) {
             this.variantSelected = index;
         },
-        addReview(productReview) {
-            this.productsReview.push(productReview);
-        }
     },
     computed: {
         title() {
