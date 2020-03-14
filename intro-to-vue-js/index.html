@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Vue Week</title>
+</head>
+
+<body>
+    <div class="nav-bar"></div>
+
+    <div id="app">
+        <div class="cart">Cart {{ cart.length }}</div>
+        <product v-bind:premium="premium"
+         v-on:add-to-cart="addToCartRoot"
+         v-on:remove-to-cart="removeToCartRoot"></product>
+    </div>
+
+    <script src="./main.js"></script>
+</body>
+
+</html>
